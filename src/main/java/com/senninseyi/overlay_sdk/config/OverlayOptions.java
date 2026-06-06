@@ -14,6 +14,7 @@ public class OverlayOptions {
     private final Integer initialX;
     private final Integer initialY;
     private final BubbleStyle bubbleStyle;
+    private final BubbleClickAction bubbleClickAction;
 
     private OverlayOptions(Builder builder) {
         this.bubbleId = builder.bubbleId;
@@ -28,6 +29,9 @@ public class OverlayOptions {
         this.initialX = builder.initialX;
         this.initialY = builder.initialY;
         this.bubbleStyle = builder.bubbleStyle;
+        this.bubbleClickAction = builder.bubbleClickAction != null
+            ? builder.bubbleClickAction
+            : BubbleClickAction.OPEN_APP;
     }
 
     public String getBubbleId() {
@@ -78,6 +82,10 @@ public class OverlayOptions {
         return bubbleStyle;
     }
 
+    public BubbleClickAction getBubbleClickAction() {
+        return bubbleClickAction;
+    }
+
     public static class Builder {
         private String bubbleId = "default";
         private int iconResId = android.R.drawable.ic_dialog_info;
@@ -91,6 +99,7 @@ public class OverlayOptions {
         private Integer initialX;
         private Integer initialY;
         private BubbleStyle bubbleStyle = new BubbleStyle.Builder().build();
+        private BubbleClickAction bubbleClickAction = BubbleClickAction.OPEN_APP;
 
         public Builder bubbleId(String value) {
             this.bubbleId = value;
@@ -149,6 +158,11 @@ public class OverlayOptions {
 
         public Builder bubbleStyle(BubbleStyle style) {
             this.bubbleStyle = style;
+            return this;
+        }
+
+        public Builder bubbleClickAction(BubbleClickAction value) {
+            this.bubbleClickAction = value != null ? value : BubbleClickAction.OPEN_APP;
             return this;
         }
 
