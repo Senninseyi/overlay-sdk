@@ -1,6 +1,7 @@
 package com.senninseyi.overlay_sdk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.senninseyi.overlay_sdk.bubble.BubbleAnimator;
 import com.senninseyi.overlay_sdk.bubble.BubbleController;
 import com.senninseyi.overlay_sdk.bubble.BubblePhysics;
+import com.senninseyi.overlay_sdk.config.BubbleClickAction;
 import com.senninseyi.overlay_sdk.callbacks.OverlayListener;
 import com.senninseyi.overlay_sdk.config.BubbleStyle;
 import com.senninseyi.overlay_sdk.config.OverlayOptions;
@@ -148,12 +150,20 @@ public class OverlayManager {
                     @Override
                     public void onBubbleClick() {
                         listener.onBubbleClick(id);
-                        if (record.panelController.isExpanded()) {
-                            record.panelController.hidePanel();
-                            listener.onBubbleCollapsed(id);
+                        if (record.options.getBubbleClickAction() == BubbleClickAction.OPEN_APP) {
+                            if (record.panelController.isExpanded()) {
+                                record.panelController.hidePanel();
+                                listener.onBubbleCollapsed(id);
+                            }
+                            openHostApp();
                         } else {
-                            record.panelController.showDefaultPanel(record.params, record.bubbleView.getWidth());
-                            listener.onBubbleExpanded(id);
+                            if (record.panelController.isExpanded()) {
+                                record.panelController.hidePanel();
+                                listener.onBubbleCollapsed(id);
+                            } else {
+                                record.panelController.showDefaultPanel(record.params, record.bubbleView.getWidth());
+                                listener.onBubbleExpanded(id);
+                            }
                         }
                         saveState(record);
                     }
@@ -204,7 +214,9 @@ public class OverlayManager {
             bubbleView.setVisibility(View.GONE);
         }
 
-        if (restored != null && restored.expanded) {
+        if (restored != null
+            && restored.expanded
+            && options.getBubbleClickAction() == BubbleClickAction.TOGGLE_PANEL) {
             panelController.showDefaultPanel(params, bubbleView.getWidth());
             listener.onBubbleExpanded(id);
         }
@@ -463,6 +475,19 @@ public class OverlayManager {
             return OverlaySDK.DEFAULT_BUBBLE_ID;
         }
         return bubbleId;
+    }
+
+    private void openHostApp() {
+        Intent launchIntent = appContext.getPackageManager().getLaunchIntentForPackage(appContext.getPackageName());
+        if (launchIntent == null) {
+            return;
+        }
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        try {
+            appContext.startActivity(launchIntent);
+        } catch (RuntimeException exception) {
+            Log.e(TAG, "Failed to launch host app", exception);
+        }
     }
 
     private static class BubbleRecord {
