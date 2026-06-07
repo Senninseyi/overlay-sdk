@@ -90,7 +90,10 @@ dependencies {
 //}
 
 signing {
-    sign(publishing.publications)
+    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
+        useInMemoryPgpKeys(signingKey.replace("\\n", "\n"), signingPassword)
+        sign(publishing.publications)
+    }
 }
 
 mavenPublishing {
