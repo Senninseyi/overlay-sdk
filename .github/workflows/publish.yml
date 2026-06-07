@@ -19,6 +19,9 @@ jobs:
                   distribution: temurin
                   java-version: 17
 
+            - name: Set up Gradle cache
+              uses: gradle/actions/setup-gradle@v4
+
             - name: Set version from Git tag
               run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
 
@@ -26,7 +29,7 @@ jobs:
               run: chmod +x gradlew
 
             - name: Publish to Maven Central
-              run: ./gradlew publishToMavenCentral
+              run: ./gradlew publishToMavenCentral --no-daemon
               env:
                   VERSION: ${{ env.VERSION }}
 
