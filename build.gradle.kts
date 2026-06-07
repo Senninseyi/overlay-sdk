@@ -1,10 +1,13 @@
-import org.gradle.api.publish.maven.MavenPublication
 
 plugins {
+    id("com.vanniktech.maven.publish") version "0.34.0"
     alias(libs.plugins.android.library)
     `maven-publish`
     signing
 }
+
+val signingKey = System.getenv("SIGNING_KEY")
+val signingPassword = System.getenv("SIGNING_PASSWORD")
 
 android {
     namespace = "com.senninseyi.overlay_sdk"
@@ -33,9 +36,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    publishing {
-        singleVariant("release")
-    }
 }
 
 dependencies {
@@ -47,46 +47,85 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("release") {
-                groupId = "com.senninseyi"
-                artifactId = "overlay-sdk"
-                version = "1.0.0"
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            create<MavenPublication>("release") {
+//                groupId = "io.github.senninseyi"
+//                artifactId = "overlay-sdk"
+//                version = "1.0.0"
+//                from(components["release"])
+//                pom {
+//                    name.set("Overlay SDK")
+//                    description.set("Android floating bubble overlay SDK")
+//                    url.set("https://github.com/senninseyi/overlay-sdk")
+//
+//                    licenses {
+//                        license {
+//                            name.set("MIT License")
+//                            url.set("https://opensource.org/licenses/MIT")
+//                        }
+//                    }
+//
+//                    developers {
+//                        developer {
+//                            id.set("senninseyi")
+//                            name.set("Oluwaseyi")
+//                        }
+//                    }
+//
+//                    scm {
+//                        connection.set(
+//                            "scm:git:git://github.com/senninseyi/overlay-sdk.git"
+//                        )
+//                        developerConnection.set(
+//                            "scm:git:ssh://github.com/senninseyi/overlay-sdk.git"
+//                        )
+//                        url.set("https://github.com/senninseyi/overlay-sdk")
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
-                from(components["release"])
+signing {
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+}
 
-                pom {
-                    name.set("Overlay SDK")
-                    description.set("Floating bubble overlay SDK for Android")
-                    url.set("https://github.com/senninseyi/overlay-sdk")
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates(
+        "io.github.senninseyi",
+        "overlay-sdk",
+        "1.0.0"
+    )
+    pom {
+        name.set("Overlay SDK")
+        description.set("Android floating bubble overlay SDK")
+        url.set("https://github.com/senninseyi/overlay-sdk")
 
-                    licenses {
-                        license {
-                            name.set("MIT License")
-                            url.set("https://opensource.org/licenses/MIT")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("Senninseyi")
-                            name.set("Oluwaseyi")
-                        }
-                    }
-
-                    scm {
-                        connection.set(
-                            "scm:git:git://github.com/senninseyi/overlay-sdk.git"
-                        )
-                        developerConnection.set(
-                            "scm:git:ssh://github.com/senninseyi/overlay-sdk.git"
-                        )
-                        url.set("https://github.com/senninseyi/overlay-sdk")
-                    }
-                }
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
             }
+        }
+
+        developers {
+            developer {
+                id.set("senninseyi")
+                name.set("Oluwaseyi")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/senninseyi/overlay-sdk")
+            connection.set("scm:git:git://github.com/senninseyi/overlay-sdk.git")
+            developerConnection.set("scm:git:ssh://github.com/senninseyi/overlay-sdk.git")
+
         }
     }
 }
