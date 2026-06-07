@@ -13,6 +13,8 @@ import com.senninseyi.overlay_sdk.config.OverlayOptions;
 import com.senninseyi.overlay_sdk.permission.OverlayPermissionManager;
 import com.senninseyi.overlay_sdk.service.OverlayService;
 
+import java.util.Map;
+
 public final class OverlaySDK {
 
     public static final String DEFAULT_BUBBLE_ID = "default";
@@ -47,6 +49,14 @@ public final class OverlaySDK {
         ensureServiceRunning();
         String id = options.getBubbleId() != null ? options.getBubbleId() : DEFAULT_BUBBLE_ID;
         overlayManager.showBubble(id, options);
+    }
+
+    public static void showBubble(Map<String, ?> payload) {
+        showBubble(OverlayOptions.fromMap(payload));
+    }
+
+    public static void showBubbleFromJson(String payload) {
+        showBubble(OverlayOptions.fromJson(payload));
     }
 
     public static void showBubble(String bubbleId) {
