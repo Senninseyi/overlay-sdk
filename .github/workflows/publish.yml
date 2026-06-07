@@ -29,13 +29,15 @@ jobs:
               run: chmod +x gradlew
 
             - name: Publish to Maven Central
-              run: ./gradlew publishToMavenCentral --no-daemon
+              run: ./gradlew publishAndReleaseToMavenCentral --no-daemon --stacktrace
               env:
                   VERSION: ${{ env.VERSION }}
 
                   # Maven Central credentials (Sonatype Central Portal tokens)
                   MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
                   MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+                  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+                  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
 
                   # PGP signing key (IMPORTANT: must be ASCII-armored private key)
                   SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
