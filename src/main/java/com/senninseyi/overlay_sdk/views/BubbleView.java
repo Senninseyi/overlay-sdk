@@ -41,12 +41,17 @@ public class BubbleView extends FrameLayout {
     }
 
     public void setIconRes(int iconResId) {
-        iconView.setImageResource(iconResId);
+        if (iconResId != 0) {
+            iconView.setImageResource(iconResId);
+        }
     }
 
     public void applyStyle(BubbleStyle style) {
         bubbleSizePx = ScreenUtils.dpToPx(getContext(), style.getBubbleSizeDp());
         bubbleBackground.setColor(style.getBubbleColor());
+        if (style.getIconResId() != 0) {
+            iconView.setImageResource(style.getIconResId());
+        }
     }
 
     public int getBubbleSizePx() {

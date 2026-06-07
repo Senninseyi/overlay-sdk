@@ -262,6 +262,11 @@ public class OverlayOptions {
             styleBuilder.bubbleSizeDp(bubbleSizeDp);
         }
 
+        Integer iconResId = intValue(styleMap, "iconResId", "icon_res_id", "icon");
+        if (iconResId != null) {
+            styleBuilder.iconResId(iconResId);
+        }
+
         Integer removeZoneWidthDp = intValue(styleMap, "removeZoneWidthDp", "remove_zone_width_dp");
         if (removeZoneWidthDp != null) {
             styleBuilder.removeZoneWidthDp(removeZoneWidthDp);
@@ -292,6 +297,14 @@ public class OverlayOptions {
             builder.bubbleSizeDp(styleObject.optInt("bubbleSizeDp"));
         } else if (styleObject.has("bubble_size_dp")) {
             builder.bubbleSizeDp(styleObject.optInt("bubble_size_dp"));
+        }
+
+        if (styleObject.has("iconResId")) {
+            builder.iconResId(styleObject.optInt("iconResId"));
+        } else if (styleObject.has("icon_res_id")) {
+            builder.iconResId(styleObject.optInt("icon_res_id"));
+        } else if (styleObject.has("icon")) {
+            builder.iconResId(styleObject.optInt("icon"));
         }
 
         if (styleObject.has("removeZoneWidthDp")) {

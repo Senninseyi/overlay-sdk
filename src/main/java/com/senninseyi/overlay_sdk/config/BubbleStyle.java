@@ -1,9 +1,12 @@
 package com.senninseyi.overlay_sdk.config;
 
+import androidx.annotation.DrawableRes;
+
 public class BubbleStyle {
 
     private final int bubbleSizeDp;
     private final int bubbleColor;
+    private final int iconResId;
     private final int removeZoneWidthDp;
     private final int removeZoneHeightDp;
     private final int removeMagnetRadiusDp;
@@ -11,6 +14,7 @@ public class BubbleStyle {
     private BubbleStyle(Builder builder) {
         this.bubbleSizeDp = builder.bubbleSizeDp;
         this.bubbleColor = builder.bubbleColor;
+        this.iconResId = builder.iconResId;
         this.removeZoneWidthDp = builder.removeZoneWidthDp;
         this.removeZoneHeightDp = builder.removeZoneHeightDp;
         this.removeMagnetRadiusDp = builder.removeMagnetRadiusDp;
@@ -22,6 +26,11 @@ public class BubbleStyle {
 
     public int getBubbleColor() {
         return bubbleColor;
+    }
+
+    @DrawableRes
+    public int getIconResId() {
+        return iconResId;
     }
 
     public int getRemoveZoneWidthDp() {
@@ -39,6 +48,8 @@ public class BubbleStyle {
     public static class Builder {
         private int bubbleSizeDp = 64;
         private int bubbleColor = 0xFF2F80ED;
+        @DrawableRes
+        private int iconResId = 0;
         private int removeZoneWidthDp = 128;
         private int removeZoneHeightDp = 56;
         private int removeMagnetRadiusDp = 96;
@@ -50,6 +61,11 @@ public class BubbleStyle {
 
         public Builder bubbleColor(int value) {
             this.bubbleColor = value;
+            return this;
+        }
+
+        public Builder iconResId(@DrawableRes int value) {
+            this.iconResId = value;
             return this;
         }
 
