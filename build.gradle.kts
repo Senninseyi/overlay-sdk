@@ -90,7 +90,6 @@ dependencies {
 //}
 
 signing {
-    useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications)
 }
 
@@ -100,7 +99,7 @@ mavenPublishing {
     coordinates(
         "io.github.senninseyi",
         "overlay-sdk",
-        "1.0.0"
+        version = System.getenv("VERSION") ?: "1.0.0"
     )
     pom {
         name.set("Overlay SDK")
