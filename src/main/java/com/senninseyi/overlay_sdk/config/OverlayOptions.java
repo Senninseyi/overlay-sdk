@@ -11,6 +11,7 @@ public class OverlayOptions {
 
     private final String bubbleId;
     private final int iconResId;
+    private final String iconPath;
     private final boolean draggable;
     private final boolean edgeMagnet;
     private final boolean safeZone;
@@ -26,6 +27,7 @@ public class OverlayOptions {
     private OverlayOptions(Builder builder) {
         this.bubbleId = builder.bubbleId;
         this.iconResId = builder.iconResId;
+        this.iconPath = builder.iconPath;
         this.draggable = builder.draggable;
         this.edgeMagnet = builder.edgeMagnet;
         this.safeZone = builder.safeZone;
@@ -47,6 +49,10 @@ public class OverlayOptions {
 
     public int getIconResId() {
         return iconResId;
+    }
+
+    public String getIconPath() {
+        return iconPath;
     }
 
     public boolean isDraggable() {
@@ -107,6 +113,11 @@ public class OverlayOptions {
         Integer iconResIdValue = intValue(payload, "iconResId", "icon", "icon_res_id");
         if (iconResIdValue != null) {
             builder.icon(iconResIdValue);
+        }
+
+        String iconPathValue = stringValue(payload, "iconPath", "icon_path");
+        if (iconPathValue != null) {
+            builder.iconPath(iconPathValue);
         }
 
         Boolean draggableValue = booleanValue(payload, "draggable");
@@ -196,6 +207,12 @@ public class OverlayOptions {
             builder.icon(jsonObject.optInt("icon"));
         }
 
+        if (jsonObject.has("iconPath")) {
+            builder.iconPath(jsonObject.optString("iconPath"));
+        } else if (jsonObject.has("icon_path")) {
+            builder.iconPath(jsonObject.optString("icon_path"));
+        }
+
         if (jsonObject.has("draggable")) {
             builder.draggable(jsonObject.optBoolean("draggable"));
         }
@@ -267,6 +284,11 @@ public class OverlayOptions {
             styleBuilder.iconResId(iconResId);
         }
 
+        String iconPath = stringValue(styleMap, "iconPath", "icon_path");
+        if (iconPath != null) {
+            styleBuilder.iconPath(iconPath);
+        }
+
         Integer removeZoneWidthDp = intValue(styleMap, "removeZoneWidthDp", "remove_zone_width_dp");
         if (removeZoneWidthDp != null) {
             styleBuilder.removeZoneWidthDp(removeZoneWidthDp);
@@ -305,6 +327,12 @@ public class OverlayOptions {
             builder.iconResId(styleObject.optInt("icon_res_id"));
         } else if (styleObject.has("icon")) {
             builder.iconResId(styleObject.optInt("icon"));
+        }
+
+        if (styleObject.has("iconPath")) {
+            builder.iconPath(styleObject.optString("iconPath"));
+        } else if (styleObject.has("icon_path")) {
+            builder.iconPath(styleObject.optString("icon_path"));
         }
 
         if (styleObject.has("removeZoneWidthDp")) {
@@ -457,6 +485,7 @@ public class OverlayOptions {
     public static class Builder {
         private String bubbleId = "default";
         private int iconResId = android.R.drawable.ic_dialog_info;
+        private String iconPath = null;
         private boolean draggable = true;
         private boolean edgeMagnet = true;
         private boolean safeZone = true;
@@ -476,6 +505,11 @@ public class OverlayOptions {
 
         public Builder icon(int value) {
             this.iconResId = value;
+            return this;
+        }
+
+        public Builder iconPath(String value) {
+            this.iconPath = value;
             return this;
         }
 

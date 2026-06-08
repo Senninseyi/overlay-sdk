@@ -7,6 +7,7 @@ public class BubbleStyle {
     private final int bubbleSizeDp;
     private final int bubbleColor;
     private final int iconResId;
+    private final String iconPath;
     private final int removeZoneWidthDp;
     private final int removeZoneHeightDp;
     private final int removeMagnetRadiusDp;
@@ -15,6 +16,7 @@ public class BubbleStyle {
         this.bubbleSizeDp = builder.bubbleSizeDp;
         this.bubbleColor = builder.bubbleColor;
         this.iconResId = builder.iconResId;
+        this.iconPath = builder.iconPath;
         this.removeZoneWidthDp = builder.removeZoneWidthDp;
         this.removeZoneHeightDp = builder.removeZoneHeightDp;
         this.removeMagnetRadiusDp = builder.removeMagnetRadiusDp;
@@ -31,6 +33,10 @@ public class BubbleStyle {
     @DrawableRes
     public int getIconResId() {
         return iconResId;
+    }
+
+    public String getIconPath() {
+        return iconPath;
     }
 
     public int getRemoveZoneWidthDp() {
@@ -50,6 +56,7 @@ public class BubbleStyle {
         private int bubbleColor = 0xFF2F80ED;
         @DrawableRes
         private int iconResId = 0;
+        private String iconPath = null;
         private int removeZoneWidthDp = 128;
         private int removeZoneHeightDp = 56;
         private int removeMagnetRadiusDp = 96;
@@ -66,6 +73,11 @@ public class BubbleStyle {
 
         public Builder iconResId(@DrawableRes int value) {
             this.iconResId = value;
+            return this;
+        }
+
+        public Builder iconPath(String value) {
+            this.iconPath = value;
             return this;
         }
 

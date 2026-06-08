@@ -11,9 +11,7 @@ val signingPassword = System.getenv("SIGNING_PASSWORD")
 
 android {
     namespace = "com.senninseyi.overlay_sdk"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -42,6 +40,11 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.dynamicanimation)
+    
+    // Image loading with SVG support
+    implementation(libs.coil)
+    implementation(libs.coil.svg)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

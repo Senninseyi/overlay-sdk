@@ -9,14 +9,24 @@ import android.widget.ImageView;
 import com.senninseyi.overlay_sdk.config.BubbleStyle;
 import com.senninseyi.overlay_sdk.utils.ScreenUtils;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.decode.SvgDecoder;
+import coil.request.ImageRequest;
+
 public class BubbleView extends FrameLayout {
 
     private final ImageView iconView;
     private final GradientDrawable bubbleBackground;
     private int bubbleSizePx;
+    private final ImageLoader imageLoader;
 
     public BubbleView(Context context) {
         super(context);
+
+        // Initialize Coil ImageLoader with SVG support
+        imageLoader = new ImageLoader.Builder(context)
+                .build();
 
         bubbleSizePx = ScreenUtils.dpToPx(context, 64);
         iconView = new ImageView(context);
@@ -46,11 +56,24 @@ public class BubbleView extends FrameLayout {
         }
     }
 
+    public void setIconPath(String path) {
+        if (path != null && !path.isEmpty()) {
+            ImageRequest request = new ImageRequest.Builder(getContext())
+                    .data(path)
+                    .target(iconView)
+                    .build();
+            imageLoader.enqueue(request);
+        }
+    }
+
     public void applyStyle(BubbleStyle style) {
         bubbleSizePx = ScreenUtils.dpToPx(getContext(), style.getBubbleSizeDp());
         bubbleBackground.setColor(style.getBubbleColor());
-        if (style.getIconResId() != 0) {
-            iconView.setImageResource(style.getIconResId());
+
+        if (style.getIconPath() != null && !style.getIconPath().isEmpty()) {
+            setIconPath(style.getIconPath());
+        } else if (style.getIconResId() != 0) {
+            setIconRes(style.getIconResId());
         }
     }
 
