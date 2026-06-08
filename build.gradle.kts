@@ -42,8 +42,8 @@ dependencies {
     implementation(libs.dynamicanimation)
     
     // Image loading with SVG support
-    implementation(libs.coil)
-    implementation(libs.coil.svg)
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-svg:2.5.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
