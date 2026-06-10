@@ -7,7 +7,9 @@ public class BubbleStyle {
     private final int bubbleSizeDp;
     private final int bubbleColor;
     private final int iconResId;
-    private final String iconPath;
+    private final String iconSource;
+    private final int iconPaddingDp;
+    private final String iconScaleType;
     private final int removeZoneWidthDp;
     private final int removeZoneHeightDp;
     private final int removeMagnetRadiusDp;
@@ -16,7 +18,9 @@ public class BubbleStyle {
         this.bubbleSizeDp = builder.bubbleSizeDp;
         this.bubbleColor = builder.bubbleColor;
         this.iconResId = builder.iconResId;
-        this.iconPath = builder.iconPath;
+        this.iconPaddingDp = builder.iconPaddingDp;
+        this.iconScaleType = builder.iconScaleType;
+        this.iconSource = builder.iconSource;
         this.removeZoneWidthDp = builder.removeZoneWidthDp;
         this.removeZoneHeightDp = builder.removeZoneHeightDp;
         this.removeMagnetRadiusDp = builder.removeMagnetRadiusDp;
@@ -35,8 +39,16 @@ public class BubbleStyle {
         return iconResId;
     }
 
-    public String getIconPath() {
-        return iconPath;
+    public String getIconSource() {
+        return iconSource;
+    }
+
+    public int getIconPaddingDp() {
+        return iconPaddingDp;
+    }
+
+    public String getIconScaleType() {
+        return iconScaleType;
     }
 
     public int getRemoveZoneWidthDp() {
@@ -56,13 +68,20 @@ public class BubbleStyle {
         private int bubbleColor = 0xFF2F80ED;
         @DrawableRes
         private int iconResId = 0;
-        private String iconPath = null;
+        private int iconPaddingDp = 12;
+        private String iconSource;
+        private String iconScaleType = "centerInside";
         private int removeZoneWidthDp = 128;
         private int removeZoneHeightDp = 56;
         private int removeMagnetRadiusDp = 96;
 
         public Builder bubbleSizeDp(int value) {
             this.bubbleSizeDp = value;
+            return this;
+        }
+
+        public Builder iconSource(String value) {
+            this.iconSource = value;
             return this;
         }
 
@@ -76,8 +95,13 @@ public class BubbleStyle {
             return this;
         }
 
-        public Builder iconPath(String value) {
-            this.iconPath = value;
+        public Builder iconPaddingDp(int value) {
+            this.iconPaddingDp = value;
+            return this;
+        }
+
+        public Builder iconScaleType(String value) {
+            this.iconScaleType = value;
             return this;
         }
 
