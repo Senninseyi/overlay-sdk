@@ -11,6 +11,8 @@ import com.senninseyi.overlay_sdk.utils.ScreenUtils;
 
 import coil.ImageLoader;
 import coil.request.ImageRequest;
+import okhttp3.OkHttpClient;
+
 
 public class BubbleView extends FrameLayout {
 
@@ -23,11 +25,13 @@ public class BubbleView extends FrameLayout {
         super(context);
 
         // Initialize Coil ImageLoader with SVG support
-        imageLoader = new ImageLoader.Builder(context).build();
+        imageLoader = new ImageLoader.Builder(context.getApplicationContext())
+                .okHttpClient(new OkHttpClient.Builder().build())
+                .build();
 
         bubbleSizePx = ScreenUtils.dpToPx(context, 64);
         iconView = new ImageView(context);
-        iconView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         bubbleBackground = new GradientDrawable();
         bubbleBackground.setShape(GradientDrawable.OVAL);
@@ -62,12 +66,15 @@ public class BubbleView extends FrameLayout {
             iconView.setImageDrawable(null);
             return;
         }
-        ImageRequest request = new ImageRequest.Builder(getContext())
-                .data(source)
-                .target(iconView)
-                .build();
 
-        imageLoader.enqueue(request);
+        iconView.post(() -> {
+            ImageRequest request = new ImageRequest.Builder(getContext())
+                    .data(source)
+                    .target(iconView)
+                    .build();
+
+            imageLoader.enqueue(request);
+        });
     }
 
     public void applyStyle(BubbleStyle style) {
@@ -82,6 +89,9 @@ public class BubbleView extends FrameLayout {
                     break;
                 case "fitXY":
                     iconView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    break;
+                case "fitCenter":
+                    iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     break;
                 case "centerInside":
                 default:
@@ -98,6 +108,10 @@ public class BubbleView extends FrameLayout {
         if (style.getIconResId() != 0) {
             setIconRes(style.getIconResId());
         } else if (style.getIconSource() != null && !style.getIconSource().isEmpty()) {
+            android.util.Log.d(
+                    "BubbleView",
+                    "iconSource from style = " + style.getIconSource()
+            );
             setIconSource(style.getIconSource());
         }
     }
